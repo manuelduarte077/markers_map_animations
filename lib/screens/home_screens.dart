@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:markers_map/constants/key_map.dart';
+import 'package:markers_map/constants/constants.dart';
 import 'package:markers_map/models/map_market.dart';
+import 'package:markers_map/widgets/widgets.dart';
 
 const keyMapBox = MAPBOX_ACCESS_TOKEN;
-const mapBoxStyle = 'mapbox/dark-v10';
-const mapBoxColor = Color(0xFF3DC5A7);
 
 final myLocation = LatLng(12.12364648688805, -86.26523041760257);
 
@@ -20,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final _pageController = PageController();
 
-  int _currentIndex = 0;
+  int _selectedIndex = 2;
 
   List<Marker> _buildMarkers() {
     final _markerList = <Marker>[];
@@ -28,28 +27,22 @@ class _HomeScreenState extends State<HomeScreen> {
       final mapItem = mapMarkers[i];
       _markerList.add(
         Marker(
+          height: markerSizeExpanded,
+          width: markerSizeExpanded,
           point: mapItem.location,
           builder: (_) {
             return GestureDetector(
               onTap: () {
-                _pageController.animateToPage(
-                  i,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.elasticOut,
-                );
-                print('Marker tapped: ${mapItem.title}');
+                _selectedIndex = i;
+                setState(() {
+                  _pageController.animateToPage(i,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.elasticOut);
+                  print('Marker tapped: ${mapItem.title}');
+                });
               },
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: mapBoxColor,
-                ),
-                child: const Icon(
-                  Icons.location_on,
-                  color: Colors.white,
-                ),
+              child: LocationMarket(
+                selected: _selectedIndex == i,
               ),
             );
           },
@@ -99,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Marker(
                     point: myLocation,
                     builder: (_) {
-                      return const _MyLocationMarker();
+                      return const MyLocationMarker();
                     },
                   ),
                 ],
@@ -118,106 +111,13 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: mapMarkers.length,
               itemBuilder: (_, index) {
                 final item = mapMarkers[index];
-                return _MyPageViewItem(
+                return MyPageViewItem(
                   mapMarker: item,
                 );
               },
             ),
           )
         ],
-      ),
-    );
-  }
-}
-
-class _MyLocationMarker extends StatelessWidget {
-  const _MyLocationMarker({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 50,
-      height: 50,
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        color: mapBoxColor,
-      ),
-      child: const Icon(
-        Icons.location_on,
-        color: Colors.red,
-        size: 20,
-      ),
-    );
-  }
-}
-
-class _MyPageViewItem extends StatelessWidget {
-  const _MyPageViewItem({
-    Key? key,
-    required this.mapMarker,
-  }) : super(key: key);
-
-  final MapMarker mapMarker;
-
-  @override
-  Widget build(BuildContext context) {
-    const _styleTitle = TextStyle(
-        fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold);
-
-    final _styleAdress = TextStyle(fontSize: 14, color: Colors.grey[800]);
-
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Card(
-        margin: EdgeInsets.zero,
-        color: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Image.network(
-                      mapMarker.image,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          mapMarker.title,
-                          style: _styleTitle,
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          mapMarker.address,
-                          style: _styleAdress,
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-            MaterialButton(
-              padding: EdgeInsets.zero,
-              elevation: 6,
-              color: mapBoxColor,
-              onPressed: () {
-                print('Marker tapped: ${mapMarker.title}');
-              },
-              child: const Text(
-                'CALL',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
