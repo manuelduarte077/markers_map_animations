@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.markers_map">
+
+   <uses-permission android:name="android.permission.INTERNET"/>
+
    <application
         android:label="markers_map"
         android:name="${applicationName}"

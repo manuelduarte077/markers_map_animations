@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:markers_map/screens/home_screens.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -6,15 +7,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Material App',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Material App Bar'),
-        ),
-        body: const Center(
-          child: Text('Hello World'),
-        ),
-      ),
+      theme: ThemeData.dark(),
+      debugShowCheckedModeBanner: false,
+      home: const HomeScreen(),
     );
   }
 }
