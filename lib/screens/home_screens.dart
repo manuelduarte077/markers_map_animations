@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong2/latlong.dart';
+
 import 'package:markers_map/constants/constants.dart';
 import 'package:markers_map/models/map_market.dart';
 import 'package:markers_map/widgets/widgets.dart';
@@ -16,8 +17,10 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   final _pageController = PageController();
+  late final AnimationController _animationController;
 
   int _selectedIndex = 2;
 
@@ -50,6 +53,21 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
     return _markerList;
+  }
+
+  @override
+  void initState() {
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 600));
+    _animationController.repeat(reverse: true);
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -90,9 +108,11 @@ class _HomeScreenState extends State<HomeScreen> {
               MarkerLayerOptions(
                 markers: [
                   Marker(
+                    height: 60,
+                    width: 60,
                     point: myLocation,
                     builder: (_) {
-                      return const MyLocationMarker();
+                      return MyLocationMarker(_animationController);
                     },
                   ),
                 ],
