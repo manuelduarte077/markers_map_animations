@@ -58,5 +58,19 @@ final mapMarkers = [
     title: 'Managua',
     address: 'Los Robles #123',
     location: _locations[4],
+  ),
+  MapMarker(
+    image:
+        'https://www.eventoplus.com.ar/wp-content/uploads/2022/03/190-tiendas-Papa-Johns-en-Rusia-siguen-abiertas-Al-final.jpg',
+    title: 'Managua',
+    address: 'Los Robles #123',
+    location: _locations[5],
+  ),
+  MapMarker(
+    image:
+        'https://www.eventoplus.com.ar/wp-content/uploads/2022/03/190-tiendas-Papa-Johns-en-Rusia-siguen-abiertas-Al-final.jpg',
+    title: 'Managua',
+    address: 'Los Robles #123',
+    location: _locations[6],
   )
 ];
